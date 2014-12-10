@@ -30,6 +30,9 @@ class AboutHashes < Neo::Koan
     # THINK ABOUT IT:
     #
     # Why might you want to use #fetch instead of #[] when accessing hash keys?
+    # [:key] gives me nil if the value is nil or if the key doesn't exist. 
+    # .fetch(:key) returns KeyError if the key doesn't exist, so now I can have
+    # keys that point to nil and keys that don't exist and identify between them.
   end
 
   def test_changing_hashes
@@ -41,6 +44,8 @@ class AboutHashes < Neo::Koan
 
     # Bonus Question: Why was "expected" broken out into a variable
     # rather than used as a literal?
+    # according to stackoverflow, because I cannot add a block on an assert
+    # without surrounding all the assert params with parentheses
   end
 
   def test_hash_is_unordered
@@ -86,8 +91,8 @@ class AboutHashes < Neo::Koan
     hash2 = Hash.new("dos")
     hash2[:one] = 1
 
-    assert_equal __, hash2[:one]
-    assert_equal __, hash2[:two]
+    assert_equal 0, hash2[:one]
+    assert_equal 0, hash2[:two]
   end
 
   def test_default_value_is_the_same_object
