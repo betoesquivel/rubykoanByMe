@@ -86,26 +86,27 @@ class AboutHashes < Neo::Koan
     hash1[:one] = 1
 
     assert_equal 1, hash1[:one]
-    assert_equal 0, hash1[:two]
+    assert_equal nil, hash1[:two]
 
     hash2 = Hash.new("dos")
     hash2[:one] = 1
 
-    assert_equal 0, hash2[:one]
-    assert_equal 0, hash2[:two]
+    assert_equal 1, hash2[:one]
+    assert_equal "dos", hash2[:two]
   end
 
   def test_default_value_is_the_same_object
-    hash = Hash.new([])
+    hash = Hash.new([]) # all new keys have the same default array object as value
 
-    hash[:one] << "uno"
-    hash[:two] << "dos"
+    hash[:one] << "uno" # I am actually adding "uno" to the default array
+    hash[:two] << "dos" # I am actually adding "dos" to the default array
 
-    assert_equal __, hash[:one]
-    assert_equal __, hash[:two]
-    assert_equal __, hash[:three]
+    assert_equal ["uno", "dos"], hash[:one]
+    assert_equal ["uno", "dos"], hash[:two]
+    assert_equal ["uno", "dos"], hash[:three]
 
-    assert_equal __, hash[:one].object_id == hash[:two].object_id
+    # so the default array is the value that I get in each key...
+    assert_equal true, hash[:one].object_id == hash[:two].object_id
   end
 
   def test_default_value_with_block
@@ -114,8 +115,8 @@ class AboutHashes < Neo::Koan
     hash[:one] << "uno"
     hash[:two] << "dos"
 
-    assert_equal __, hash[:one]
-    assert_equal __, hash[:two]
-    assert_equal __, hash[:three]
+    assert_equal ["uno"], hash[:one]
+    assert_equal ["dos"], hash[:two]
+    assert_equal [], hash[:three]
   end
 end
