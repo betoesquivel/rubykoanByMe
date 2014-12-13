@@ -19,13 +19,13 @@ class AboutSymbols < Neo::Koan
     symbol1 = :a_symbol
     symbol2 = :a_symbol
 
-    assert_equal __, symbol1           == symbol2
-    assert_equal __, symbol1.object_id == symbol2.object_id
+    assert_equal true, symbol1           == symbol2
+    assert_equal true, symbol1.object_id == symbol2.object_id
   end
 
   def test_method_names_become_symbols
-    symbols_as_strings = Symbol.all_symbols.map { |x| x.to_s }
-    assert_equal __, symbols_as_strings.include?("test_method_names_become_symbols")
+    symbols_as_strings = Symbol.all_symbols
+    assert_equal true, symbols_as_strings.include?("test_method_names_become_symbols")
   end
 
   # THINK ABOUT IT:
