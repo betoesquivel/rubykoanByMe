@@ -104,28 +104,28 @@ class AboutRegularExpressions < Neo::Koan
   end
 
   def test_caret_anchors_to_the_start_of_lines
-    assert_equal __, "num 42\n2 lines"[/^\d+/]
+    assert_equal "2", "num 42\n2 lines"[/^\d+/]
   end
 
   def test_dollar_sign_anchors_to_the_end_of_lines
-    assert_equal __, "2 lines\nnum 42"[/\d+$/]
+    assert_equal "42", "2 lines\nnum 42"[/\d+$/]
   end
 
   def test_slash_b_anchors_to_a_word_boundary
-    assert_equal __, "bovine vines"[/\bvine./]
+    assert_equal "vines", "bovine vines"[/\bvine./]
   end
 
   # ------------------------------------------------------------------
 
   def test_parentheses_group_contents
-    assert_equal __, "ahahaha"[/(ha)+/]
+    assert_equal "hahaha", "ahahaha"[/(ha)+/]
   end
 
   # ------------------------------------------------------------------
 
   def test_parentheses_also_capture_matched_content_by_number
-    assert_equal __, "Gray, James"[/(\w+), (\w+)/, 1]
-    assert_equal __, "Gray, James"[/(\w+), (\w+)/, 2]
+    assert_equal "Gray", "Gray, James"[/(\w+), (\w+)/, 1]
+    assert_equal "James", "Gray, James"[/(\w+), (\w+)/, 2]
   end
 
   def test_variables_can_also_be_used_to_access_captures
