@@ -80,6 +80,18 @@ class AboutControlStatements < Neo::Koan
     assert_equal :false_value, result
   end
 
+  # note: Most ruby implementations don't support
+  # tail call optimization, so I should abstain from 
+  # using it. This according to an answer in stackoverflow by
+  # Jorg Mittag and Andrew Grimm
+  def fact (n)
+    if n == 0 or n == 1
+      result = 1
+    else
+      result = n * fact(n - 1)
+    end
+  end
+
   def test_while_statement
     i = 1
     result = 1
@@ -87,7 +99,7 @@ class AboutControlStatements < Neo::Koan
       result = result * i
       i += 1
     end
-    assert_equal __, result
+    assert_equal fact(10), result
   end
 
   def test_break_statement
@@ -98,7 +110,7 @@ class AboutControlStatements < Neo::Koan
       result = result * i
       i += 1
     end
-    assert_equal __, result
+    assert_equal fact(10), result
   end
 
   def test_break_statement_returns_values
@@ -108,9 +120,10 @@ class AboutControlStatements < Neo::Koan
       i += 1
     end
 
-    assert_equal __, result
+    assert_equal 2, result
   end
 
+  # So the next statement is like a continue statement in java
   def test_next_statement
     i = 0
     result = []
@@ -119,7 +132,7 @@ class AboutControlStatements < Neo::Koan
       next if (i % 2) == 0
       result << i
     end
-    assert_equal __, result
+    assert_equal [1,3,5,7,9], result
   end
 
   def test_for_statement
@@ -128,7 +141,7 @@ class AboutControlStatements < Neo::Koan
     for item in array
       result << item.upcase
     end
-    assert_equal [__, __, __], result
+    assert_equal ["FISH", "AND", "CHIPS"], result
   end
 
   def test_times_statement
@@ -136,7 +149,7 @@ class AboutControlStatements < Neo::Koan
     10.times do
       sum += 1
     end
-    assert_equal __, sum
+    assert_equal 10, sum
   end
 
 end
