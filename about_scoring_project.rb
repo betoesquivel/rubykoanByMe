@@ -30,7 +30,30 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  # return score
+  count = Hash.new(0)
+  score = 0
+  i = 0
+  while i < dice.size
+    d = dice[i]
+    count[d] += 1
+    if count[d] == 3
+      count[d] = 0
+      if d == 1
+        score += 1000
+      else
+        score += d*100
+      end
+    end
+    i+=1
+  end
+  score += count[1] * 100
+  score += count[5] * 50
+  return score
+end
+
+def count_score(dice)
+  # INEFFICIENT but fun... jejejeje
   points = 0
   ones = dice.select{ |x| x==1 }.count
   fives = dice.select{ |x| x==5 }.count
@@ -49,11 +72,6 @@ def score(dice)
   points += count_points(5,fives)
   points = ( ones >= 3 ? points + (ones - 3) * 100 : points + ones * 100 )
   points = ( fives >= 3 ? points + (fives - 3) * 50 : points + fives * 50 )
-end
-
-def count_num_in_arr(num,arr)
-  #I will use blocks here
-  #To return two params
 end
 
 def count_points(num,times)
