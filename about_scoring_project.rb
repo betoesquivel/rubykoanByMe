@@ -31,6 +31,37 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 
 def score(dice)
   # You need to write this method
+  points = 0
+  ones = dice.select{ |x| x==1 }.count
+  fives = dice.select{ |x| x==5 }.count
+  rest = dice.select{ |x| x!=1 and x!=5}
+
+  num = 1
+  while (rest.count  >= 3 and num <= 6)
+    num += 1
+    next if num == 5
+    times = dice.select{ |x| x == num }.count
+    points += count_points(num,times)
+    rest = rest.select{ |x| x!=num }
+  end
+
+  points += count_points(1,ones) * 10
+  points += count_points(5,fives)
+  points = ( ones >= 3 ? points + (ones - 3) * 100 : points + ones * 100 )
+  points = ( fives >= 3 ? points + (fives - 3) * 50 : points + fives * 50 )
+end
+
+def count_num_in_arr(num,arr)
+  #I will use blocks here
+  #To return two params
+end
+
+def count_points(num,times)
+  if times>=3
+    num * 100
+  else
+    0
+  end
 end
 
 class AboutScoringProject < Neo::Koan
