@@ -157,13 +157,16 @@ class AboutClassMethods < Neo::Koan
   #   end
   #
   # Which do you prefer and why?
+  # I prefer the first one becaue the syntax is easier.
   # Are there times you might prefer one over the other?
+  # When I have to write more than one class method, I will prefer the 
+  # second way since that way I have less overhead.
 
   # ------------------------------------------------------------------
 
   def test_heres_an_easy_way_to_call_class_methods_from_instance_methods
     fido = Dog.new
-    assert_equal __, fido.class.another_class_method
+    assert_equal :still_another_way, fido.class.another_class_method
   end
 
 end
