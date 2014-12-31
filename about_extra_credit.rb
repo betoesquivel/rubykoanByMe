@@ -7,13 +7,14 @@
 # Write a player class and a Game class to complete the project.  This
 # is a free form assignment, so approach it however you desire.
 
+
 class Greed
-  attr_accesor :players
-  attr_accesor :player_names
-  attr_accesor :player_turn
+  attr_accessor :players
+  attr_accessor :player_names
+  attr_accessor :player_turn
 
   def initialize(player_names)
-    @players = Hash.new(default = 0)
+    @players = Hash.new(default=0)
     @player_names = Array.new(player_names)
     @player_turn = 0 # first player turn
   end
@@ -65,16 +66,20 @@ class Turn
 
   def initialize
     @score = 0
+    @continue = "yes"
     @dice = 5
   end
 
   def to_s
     puts "score: #{@score}"
   end
+
   def play
     dice = DiceSet.new
-    while @dice > 0 and continue.downcase == "yes"
+    while @dice > 0 and @continue.downcase == "yes"
+      puts "You have #{@dice} dice"
       dice.roll(@dice)
+      dice.calculate_score
       @score += dice.score
       @dice = dice.non_scoring
 
@@ -86,11 +91,11 @@ class Turn
       # Show values, score and ask if user wants to
       # continue throwing @dice dice.
       puts "THROW RESULT"
-      puts "#{dice}"
+      puts "#{dice.to_s}"
       puts "TURN INFO"
-      puts "#{self}\n"
+      puts "#{self.to_s}\n"
       puts "You have #{@dice} non-scoring dice. Keep throwing?" if @dice > 0
-      @continue = "yes"
+      @continue = STDIN.gets
       @continue = "no" unless @dice > 0
     end
   end
@@ -109,6 +114,7 @@ class DiceSet
   def initialize
     @values = []
     @rand = Math.const_get(:E)
+    @score = 0
   end
 
   def to_s
@@ -158,13 +164,16 @@ class DiceSet
 
   def non_scoring()
     non_scoring = 0
-    key = 2
+    key = 1
     while key < 6
-      next if key == 5
-      non_scoring += 1 if @count[key] >= 3
       key += 1
+      next if key == 5
+      non_scoring += 1 unless @count[key] >= 3
     end
+    return non_scoring
   end
 
 end
 
+game = Greed.new (["beto","hugo"])
+game.play
