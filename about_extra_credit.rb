@@ -24,6 +24,7 @@ class Greed
     # order players by score
     i = 0
     standings = []
+    next_place = @player_names[0]
     while i<player_names.count
       @players.each { |name, score|
         next if standings.member?(name)
@@ -40,13 +41,14 @@ class Greed
     while best_score < 3000
       turn = Turn.new
       player = @player_names[@player_turn]
+      puts "Player #{player}'s turn."
       turn.play
       players[player] += turn.score
       best_score = ( best_score < players[player] ? players[player] : best_score )
       @player_turn = (@player_turn + 1 ) % player_names.count
     end
     last_turn
-    puts "#{self}"
+    puts "#{self.to_s}"
   end
 
   def last_turn
@@ -66,7 +68,7 @@ class Turn
 
   def initialize
     @score = 0
-    @continue = "yes"
+    @continue = "yes\n"
     @dice = 5
   end
 
@@ -76,8 +78,7 @@ class Turn
 
   def play
     dice = DiceSet.new
-    while @dice > 0 and @continue.downcase == "yes"
-      puts "You have #{@dice} dice"
+    while  @continue == "yes\n" and @dice > 0
       dice.roll(@dice)
       dice.calculate_score
       @score += dice.score
@@ -86,6 +87,7 @@ class Turn
       if  dice.score == 0
         @score = 0
         @continue = "no"
+        @dice = 0
       end
 
       # Show values, score and ask if user wants to
@@ -95,7 +97,7 @@ class Turn
       puts "TURN INFO"
       puts "#{self.to_s}\n"
       puts "You have #{@dice} non-scoring dice. Keep throwing?" if @dice > 0
-      @continue = STDIN.gets
+      @continue = STDIN.gets if @dice > 0
       @continue = "no" unless @dice > 0
     end
   end
@@ -112,7 +114,6 @@ class DiceSet
   attr_reader :count #Hash with number of appearances per number (1 - 6)
 
   def initialize
-    @values = []
     @rand = Math.const_get(:E)
     @score = 0
   end
@@ -168,7 +169,7 @@ class DiceSet
     while key < 6
       key += 1
       next if key == 5
-      non_scoring += 1 unless @count[key] >= 3
+      non_scoring += 1 unless @count[key] >= 3 or @count[key] <= 0
     end
     return non_scoring
   end
